@@ -1,14 +1,14 @@
 # utility
 
-A Clojure library designed to ... well, that part is up to you.
+Utility definitions worth keeping around.
 
 ## Usage
 
-FIXME
+Either use the library (somehow), or copy definitions.
 
 ## License
 
-Copyright © 2016 FIXME
+Copyright © 2016 Chariot Solutions LLC
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
