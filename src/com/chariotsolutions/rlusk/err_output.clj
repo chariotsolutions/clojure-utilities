@@ -36,7 +36,7 @@
           (apply ~stdout-fn args#))))))
 
 (wrap-stderr println)
-(wrap-stderr eprintf)
+(wrap-stderr printf)
 (wrap-stderr clojure.pprint/pprint)
 
 
