@@ -1,6 +1,8 @@
 (ns com.chariotsolutions.rlusk.testing.output-capture
   "Testing support for capturing output to STDOUT and STDERR"
-  (:import [java.io StringWriter PrintWriter]))
+  (:import [java.io StringWriter PrintWriter])
+  (:require [clojure.spec :as s]
+            [clojure.spec.test :as stest]))
 
 (defrecord TestOutput
     [print-writer string-writer]
@@ -14,6 +16,7 @@
   (let [string-writer (StringWriter. 4000)
         print-writer (PrintWriter. string-writer true)]
     (->TestOutput print-writer string-writer)))
+
 
 (defmacro capture-test-output
   "Capture STDOUT and STDERR for testing output routines
@@ -40,8 +43,16 @@
            out-output# (make-test-output)]
        (binding [*err* (:print-writer err-output#)
                  *out* (:print-writer out-output#)]
-         ~@test-setup#
-         (let [~(first err-out-names) (str err-output#)
+         ~@test-setup#)
+       (let [~(first err-out-names) (str err-output#)
                ~(second err-out-names) (str out-output#)]
-           ~@test-eval#)))))
+           ~@test-eval#))))
+
+(s/fdef capture-test-output
+        :args (s/cat :err-out-names (s/and vector?
+                                           (s/tuple simple-symbol? simple-symbol?))
+                     :body (s/cat :test-body (s/+ list?)
+                                  :divider keyword?
+                                  :eval-body (s/+ list?)))
+        :ret any?)
 
