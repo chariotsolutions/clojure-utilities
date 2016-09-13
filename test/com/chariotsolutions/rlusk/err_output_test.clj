@@ -1,6 +1,7 @@
 (ns com.chariotsolutions.rlusk.err-output-test
   (:require [com.chariotsolutions.rlusk.err-output :as sut]
-            [com.chariotsolutions.rlusk.testing.output-capture :refer (capture-test-output)]
+            [com.chariotsolutions.rlusk.testing.output-capture :as oc
+             :refer (capture-test-output)]
             [clojure.test :refer :all])
   (:import [java.io PrintWriter StringWriter]))
 
@@ -27,8 +28,8 @@
 
 (deftest test-err-println
   (testing "Test err-println"
-    (let [err-output (make-test-output)
-          out-output (make-test-output)]
+    (let [err-output (oc/make-test-output)
+          out-output (oc/make-test-output)]
       (binding [*err* (:print-writer err-output)
                 *out* (:print-writer out-output)]
         (println "Out")
@@ -38,8 +39,8 @@
       (is (= (str out-output) "Out\nOut\n"))
       ))
   (testing "Test with-err-out"
-    (let [err-output (make-test-output)
-          out-output (make-test-output)]
+    (let [err-output (oc/make-test-output)
+          out-output (oc/make-test-output)]
       (binding [*err* (:print-writer err-output)
                 *out* (:print-writer out-output)]
         (println "Out")
